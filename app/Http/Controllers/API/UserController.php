@@ -49,7 +49,9 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ];
+        $user = array();
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
             $success = true;
             $message = "User login successfully";
         } else {
@@ -59,7 +61,8 @@ class UserController extends Controller
 
         $response = [
             'success' => $success,
-            'message' => $message
+            'message' => $message,
+            'user' => $user
         ];
 
         return response()->json($response);
