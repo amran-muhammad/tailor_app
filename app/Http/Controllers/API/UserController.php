@@ -43,6 +43,27 @@ class UserController extends Controller
 
         return response()->json($response);
     }
+    public function user_login(Request $request)
+    {
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+        if (Auth::attempt($credentials)) {
+            $success = true;
+            $message = "User login successfully";
+        } else {
+            $success = false;
+            $message = "Unautorised";
+        }
+
+        $response = [
+            'success' => $success,
+            'message' => $message
+        ];
+
+        return response()->json($response);
+    }
 
 
    
@@ -63,23 +84,16 @@ class UserController extends Controller
             'success' => $success,
             'message' => $message
         ];
-
+        
         return response()->json($response);
     }
     public function get_all_tailor(Request $request)
     {
-        $user = Auth::user();
-
-        if ($user && $user->type == 'Admin') {
-            $tailors = User::where('type', 'Tailor')->get();
-            return response()->json([
-                'data' => $tailors
-            ]);
-        } else {
-            return response()->json([
-                'data' => false
-            ]);
-        }
+        $tailors = User::where('type', 'Tailor')->get();
+        return response()->json([
+            'data' => $tailors,
+            'success' => true,
+        ]);
     }
     public function get_all_dashboard_teacher(Request $request)
     {
@@ -114,26 +128,20 @@ class UserController extends Controller
     }
     public function create_new_customer(Request $request)
     {
-        $user = Auth::user();
-
-        if ($user && $user->type == 'Admin') {
-            $customer = new User();
-            $customer->fname = $request->fname;
-            $customer->lname = $request->lname;
-            $customer->email = $request->email;
-            $customer->password = Hash::make($request->password);
-            $customer->type = 'Customer';
-            $customer->mobile = $request->mobile;
-            $customer->status = $request->status;
-            $customer->save();
-            return response()->json([
-                'data' => $customer
-            ]);
-        } else {
-            return response()->json([
-                'data' => false
-            ]);
-        }
+        $customer = new User();
+        $customer->fname = $request->fname;
+        $customer->lname = $request->lname;
+        $customer->email = $request->email;
+        $customer->password = Hash::make($request->password);
+        $customer->type = 'Customer';
+        $customer->mobile = $request->mobile;
+        $customer->address = $request->address;
+        $customer->status = $request->status;
+        $customer->save();
+        return response()->json([
+            'data' => $customer,
+            'success' => true
+        ]);
     }
     public function create_new_tailor(Request $request)
     {
@@ -148,13 +156,16 @@ class UserController extends Controller
             $tailor->type = 'Tailor';
             $tailor->mobile = $request->mobile;
             $tailor->status = $request->status;
+            $tailor->address = $request->address;
             $tailor->save();
             return response()->json([
-                'data' => $tailor
+                'data' => $tailor,
+                'success' => true
             ]);
         } else {
             return response()->json([
-                'data' => false
+                'data' => false,
+                'success' => false
             ]);
         }
     }
@@ -183,14 +194,19 @@ class UserController extends Controller
             if (isset($request->type)) {
                 $object_user['type'] = $request->type;
             }
+            if (isset($request->address)) {
+                $object_user['address'] = $request->address;
+            }
             $user->update($object_user);
             return response()->json([
-                'data' => $user
+                'data' => $user,
+                'success' => true
             ]);
         
         } else {
             return response()->json([
-                'data' => false
+                'data' => false,
+                'success' => false
             ]);
         }
     }
@@ -224,7 +240,8 @@ class UserController extends Controller
             }
 
             return response()->json([
-                'data' => $data
+                'data' => $data,
+                'success' => true
             ]);
         }
     }
@@ -235,11 +252,13 @@ class UserController extends Controller
         if ($user && $user->type == 'Admin') {
                 User::where('id', $request->id)->delete();
                 return response()->json([
-                    'data' => true
+                    'data' => true,
+                    'success' => true
                 ]);
         } else {
             return response()->json([
-                'data' => false
+                'data' => false,
+                'success' => false
             ]);
         }
     }

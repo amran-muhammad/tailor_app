@@ -4,9 +4,7 @@
             @on-cancel="deleteModal = false" ok-text="Confirm" draggable sticky loading>
 
         </Modal>
-        <Modal v-model="editStatusModal" title="Are you sure update the status?" @on-ok="updateClothStatus"
-            @on-cancel="editStatusModal = false" ok-text="Confirm" draggable sticky loading>
-        </Modal>
+    
         <Modal v-model="addModal" title="Add new cloth" @on-ok="addCloth" @on-cancel="addModal = false"
             ok-text="Save" draggable sticky loading>
             <div class="col-md-12">
@@ -51,16 +49,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row mt-1">
-                                <label for="status" class="col-sm-4 col-form-label text-md-right">Status</label>
-                                <div class="col-md-8">
-                                    <select class="form-control" v-model="form_data.status">
-                                        <option value="">Choose...</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
-                                    </select>
-                                </div>
-                            </div>
+                           
                             <div class="form-group row mt-1">
                                 <label for="status" class="col-sm-4 col-form-label text-md-right">Category Name</label>
                                 <div class="col-md-8">
@@ -116,16 +105,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row mt-1">
-                                <label for="status" class="col-sm-4 col-form-label text-md-right">Status</label>
-                                <div class="col-md-8">
-                                    <select class="form-control" v-model="edit_data.status">
-                                        <option value="">Choose...</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
-                                    </select>
-                                </div>
-                            </div>
+                           
                             <div class="form-group row mt-1">
                                 <label for="status" class="col-sm-4 col-form-label text-md-right">Category Name</label>
                                 <div class="col-md-8">
@@ -143,7 +123,7 @@
 
         </Modal>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h1>Cloths</h1>
             <br>
             Total Cloths: {{ cloths.length }}
@@ -157,8 +137,34 @@
                 <div class="col-md-8">
                     <label for="search" class="col-sm-4 col-form-label text-md-right">Find A Cloth</label>
                     <input id="search" type="text" class="form-control" v-model="search" autofocus autocomplete="off"
-                        placeholder="Enter Email/Mobile/First Name/Last Name">
-
+                    placeholder="What are you looking for">
+                    
+                    <label for="search" class="col-sm-4 col-form-label text-md-right">Sort</label>
+                    <select class="form-control" v-model="sort">
+                        <option value="">Choose...</option>
+                        <option value="price">Price</option>
+                        <option value="rate">Rate</option>
+                    </select>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group row">
+                <div class="col-md-8">
+                    
+                    <label for="search" class="col-sm-4 col-form-label text-md-right">Sort Type</label>
+                    <select class="form-control" v-model="sort_type">
+                        <option value="">Choose...</option>
+                        <option value="DESC">High to Low</option>
+                        <option value="ASC">Low to High</option>
+                    </select>
+                    <label for="search" class="col-sm-4 col-form-label text-md-right">Category</label>
+                    <select class="form-control" v-model="category_name">
+                        <option value="">Choose...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                     <button style="margin-top:10px" class="btn btn-success" @click="searchCloth()">
                         Search
                     </button>
@@ -177,7 +183,6 @@
                     <th scope="col">Price</th>
                     <th scope="col">Image</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -215,12 +220,8 @@
                     <td>{{ item.price }}</td>
                     <td> <img height="100" width="100" :src="item.image"></td>
                     <td>{{ item.description }}</td>
-                    <td>{{ item.status }}</td>
+                   
                     <td>
-                        <button v-if="item.status == 'Pending'" class="btn btn-sm btn-success"
-                            @click="editStatusModalOn(item, index)">Activate</button>
-                        <button v-else class="btn btn-sm btn-info"
-                            @click="editStatusModalOn(item, index)">Deactivate</button>
                         <button style="margin-left:5px" class="btn btn-sm btn-secondary"
                             @click="editCloth(item, index)">Edit</button>
                         <button style="margin-left:5px" class="btn btn-sm btn-danger"
@@ -245,14 +246,12 @@ export default {
             addModal: ref(false),
             deleteModal: ref(false),
             editModal: ref(false),
-            editStatusModal: ref(false),
             form_data: {
                 cloth_name: '',
                 price: 0,
                 category_name: '',
                 image: '',
                 description: '',
-                status: '',
             },
             edit_data: {
                 id: 0,
@@ -261,10 +260,12 @@ export default {
                 category_name: '',
                 image: '',
                 description: '',
-                status: '',
             },
             editIndex: -1,
-            search: ''
+            search: '',
+            sort: '',
+            category_name: '',
+            sort_type: 'ASC'
         }
     },
     created() {
@@ -311,7 +312,7 @@ export default {
             }
             
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.post('/api/user/create/new/cloth', this.form_data)
+                this.$axios.post('/api/cloths/create/new/cloth', this.form_data)
                     .then(response => {
                         if (response.data.data) {
                             this.addModal = false
@@ -336,16 +337,10 @@ export default {
             this.edit_data.description = item.description
             this.edit_data.status = item.status
         },
-        editStatusModalOn(item, index) {
-            this.editStatusModal = true
-            this.editIndex = index
-            this.edit_data.id = item.id
-            this.edit_data.status = item.status == 'Pending' ? 'Approved' : 'Pending'
-        },
-
+       
         updateCloth() {
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.post('/api/user/update/data', this.edit_data)
+                this.$axios.post('/api/cloths/update/data', this.edit_data)
                     .then(response => {
                         if (response.data.data) {
                             this.editModal = false
@@ -359,27 +354,11 @@ export default {
                     });
             })
         },
-        updateClothStatus() {
-            this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.post('/api/user/update/data', { id: this.edit_data.id, status: this.edit_data.status })
-                    .then(response => {
-                        if (response.data.data) {
-                            this.editStatusModal = false
-                            this.cloths[this.editIndex].id = response.data.data.id
-                            this.cloths[this.editIndex].status = response.data.data.status
-                        } else {
-                            console.log(response);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    });
-            })
-        },
+       
         searchCloth() {
             this.loader = true
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.get('/api/cloth/search' + '?search=' + search.value + '&type=Cloth')
+                this.$axios.get('/api/cloths/search' + '?search=' + this.search + '&sort='+ this.sort + '&sort_type='+ this.sort_type + '&category_name='+ this.category_name)
                     .then(response => {
                         if (response.data.data) {
                             this.loader = false
@@ -400,7 +379,7 @@ export default {
         },
         deleteCloth() {
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.post('/api/cloth/delete', {
+                this.$axios.post('/api/cloths/delete', {
                     id: this.edit_data.id
                 })
                     .then(response => {

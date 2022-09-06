@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 05, 2022 at 10:07 PM
+-- Generation Time: Sep 06, 2022 at 08:39 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -31,6 +31,7 @@ CREATE TABLE `cloths` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `cloth_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` int(10) DEFAULT NULL,
+  `rate` float DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `category_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -43,8 +44,9 @@ CREATE TABLE `cloths` (
 -- Dumping data for table `cloths`
 --
 
-INSERT INTO `cloths` (`id`, `cloth_name`, `price`, `image`, `category_name`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Shirt', 1, 'https://i.ibb.co/ry2DFYD/shirt.jpg', 'Male', 'dsdgsdg', 'Approved', '2022-09-05 13:53:25', '2022-09-05 13:53:25');
+INSERT INTO `cloths` (`id`, `cloth_name`, `price`, `rate`, `image`, `category_name`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Shirt', 500, NULL, 'https://i.ibb.co/ry2DFYD/shirt.jpg', 'Male', 'Boys, Males, Gentlemen Shirt', 'Approved', '2022-09-05 13:53:25', '2022-09-05 23:22:14'),
+(2, 'Women Shirt', 400, NULL, 'https://i.ibb.co/ry2DFYD/shirt.jpg', 'Female', 'Girls, Ladies, Women, Females Shirt', 'Approved', '2022-09-05 23:21:28', '2022-09-05 23:21:28');
 
 -- --------------------------------------------------------
 
@@ -146,8 +148,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `mobile`, `email`, `address`, `type`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `status`) VALUES
 (1, 'Super', 'Admin', '01777000000', 'admin@gmail.com', NULL, 'Admin', NULL, '$2y$10$sodTC0jkzoWTIWTT.SO7Nuec.rsHQ5VOU8giTYiHwLUy1dKALPlhe', NULL, '2022-05-19 13:01:59', '2022-05-19 13:01:59', 'Approved'),
-(22, 'Labiba', 'Jannat', '01717000666', 'labiba@gmail.com', NULL, 'Customer', NULL, '$2y$10$Fmkc1zgPhaOF4Vyid65H7uAfPryR4MzkvqLXij9KqUCg6MEOZ8eU.', NULL, '2022-09-05 12:36:52', '2022-09-05 12:37:12', 'Pending'),
-(23, 'Amran', 'Muhammad', '01919000999', 'amran@gmail.com', NULL, 'Tailor', NULL, '$2y$10$Td178HCgf54srLakw9sOLuZ2m0tBoX/d7bAO7crG2/SaFVY0UfADG', NULL, '2022-09-05 12:52:00', '2022-09-05 12:52:00', 'Approved');
+(22, 'Labiba', 'Jannat', '01717000666', 'labiba@gmail.com', 'sdgsdgsdg', 'Customer', NULL, '$2y$10$Fmkc1zgPhaOF4Vyid65H7uAfPryR4MzkvqLXij9KqUCg6MEOZ8eU.', NULL, '2022-09-05 12:36:52', '2022-09-06 00:18:25', 'Pending'),
+(23, 'Amran', 'Muhammad', '01919000999', 'amran@gmail.com', 'bagbari', 'Tailor', NULL, '$2y$10$Td178HCgf54srLakw9sOLuZ2m0tBoX/d7bAO7crG2/SaFVY0UfADG', NULL, '2022-09-05 12:52:00', '2022-09-05 23:52:55', 'Approved');
 
 --
 -- Indexes for dumped tables
@@ -201,7 +203,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cloths`
 --
 ALTER TABLE `cloths`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

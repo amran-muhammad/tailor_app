@@ -4,9 +4,7 @@
             @on-cancel="deleteModal = false" ok-text="Confirm" draggable sticky loading>
 
         </Modal>
-        <Modal v-model="editStatusModal" title="Are you sure update the status?" @on-ok="updateCustomerStatus"
-            @on-cancel="editStatusModal = false" ok-text="Confirm" draggable sticky loading>
-        </Modal>
+       
         <Modal v-model="addModal" title="Add new customer" @on-ok="addCustomer" @on-cancel="addModal = false"
             ok-text="Save" draggable sticky loading>
             <div class="col-md-12">
@@ -66,16 +64,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row mt-1">
-                                <label for="status" class="col-sm-4 col-form-label text-md-right">Status</label>
-                                <div class="col-md-8">
-                                    <select class="form-control" v-model="form_data.status">
-                                        <option value="">Choose...</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
-                                    </select>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -168,7 +157,6 @@
                     <th scope="col">Email</th>
                     <th scope="col">Mobile</th>
                     <th scope="col">Address</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -205,12 +193,7 @@
                     <td>{{ item.email }}</td>
                     <td>{{ item.mobile }}</td>
                     <td>{{ item.address }}</td>
-                    <td>{{ item.status }}</td>
                     <td>
-                        <button v-if="item.status == 'Pending'" class="btn btn-sm btn-success"
-                            @click="editStatusModalOn(item, index)">Activate</button>
-                        <button v-else class="btn btn-sm btn-info"
-                            @click="editStatusModalOn(item, index)">Deactivate</button>
                         <button style="margin-left:5px" class="btn btn-sm btn-secondary"
                             @click="editCustomer(item, index)">Edit</button>
                         <button style="margin-left:5px" class="btn btn-sm btn-danger"
@@ -235,7 +218,6 @@ export default {
             addModal: ref(false),
             deleteModal: ref(false),
             editModal: ref(false),
-            editStatusModal: ref(false),
             form_data: {
                 fname: '',
                 lname: '',
@@ -243,7 +225,6 @@ export default {
                 password: '',
                 mobile: '',
                 address: '',
-                status: '',
                 type: 'Customer'
             },
             edit_data: {
@@ -254,7 +235,6 @@ export default {
                 password: '',
                 mobile: '',
                 address: '',
-                status: '',
                 type: 'Customer'
             },
             editIndex: -1,
@@ -310,22 +290,18 @@ export default {
                 this.error = "Mobile Number is required!"
                 return
             }
-            
-        
-            this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.post('/api/user/create/new/customer', this.form_data)
-                    .then(response => {
-                        if (response.data.data) {
-                            this.addModal = false
-                            this.customers.unshift(response.data.data)
-                        } else {
-                            console.log(response);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    });
-            })
+            this.$axios.post('/api/user/create/new/customer', this.form_data)
+                .then(response => {
+                    if (response.data.data) {
+                        this.addModal = false
+                        this.customers.unshift(response.data.data)
+                    } else {
+                        console.log(response);
+                    }
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
         },
         editCustomer(item, index) {
             this.editModal = true
@@ -337,13 +313,6 @@ export default {
             this.edit_data.address = item.address
             this.edit_data.email = item.email
         },
-        editStatusModalOn(item, index) {
-            this.editStatusModal = true
-            this.editIndex = index
-            this.edit_data.id = item.id
-            this.edit_data.status = item.status == 'Pending' ? 'Approved' : 'Pending'
-        },
-
         updateCustomer() {
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
                 this.$axios.post('/api/user/update/data', this.edit_data)
@@ -360,23 +329,7 @@ export default {
                     });
             })
         },
-        updateCustomerStatus() {
-            this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.post('/api/user/update/data', { id: this.edit_data.id, status: this.edit_data.status })
-                    .then(response => {
-                        if (response.data.data) {
-                            this.editStatusModal = false
-                            this.customers[this.editIndex].id = response.data.data.id
-                            this.customers[this.editIndex].status = response.data.data.status
-                        } else {
-                            console.log(response);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    });
-            })
-        },
+    
         searchUser() {
             this.loader = true
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
