@@ -328,7 +328,6 @@ export default {
         },
         searchUser() {
             this.loader = true
-            this.$axios.get('/sanctum/csrf-cookie').then(response => {
                 this.$axios.get('/api/user/search' + '?search=' + search.value + '&type=Tailor')
                     .then(response => {
                         if (response.data.data) {
@@ -341,7 +340,6 @@ export default {
                     .catch(function (error) {
                         console.error(error);
                     });
-            })
         },
         deleteTailorOn(item, index) {
             this.deleteModal = true
