@@ -30,7 +30,7 @@ Route::post('user/delete', [UserController::class, 'delete_user'])->middleware('
 Route::post('user/create/new/tailor', [UserController::class, 'create_new_tailor'])->middleware('auth:sanctum');
 Route::post('user/create/new/customer', [UserController::class, 'create_new_customer']);
 Route::post('user/update/data', [UserController::class, 'update_user'])->middleware('auth:sanctum');
-Route::get('user/search', [UserController::class, 'find_a_user'])->middleware('auth:sanctum');
+Route::get('user/search', [UserController::class, 'find_a_user']);
 Route::get('customers/all', [UserController::class, 'get_all_customer'])->middleware('auth:sanctum');
 
 //Tailor

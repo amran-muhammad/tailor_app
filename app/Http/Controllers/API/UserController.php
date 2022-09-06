@@ -213,37 +213,32 @@ class UserController extends Controller
 
     public function find_a_user(Request $request)
     {
-        $user = Auth::user();
-
-        if ($user && $user->type == 'Admin') {
-            $data = array();
-            if ($request->type == 'Customer') {
-                $data = User::where(function ($query) use ($request) {
-                    $query->where('type', '=', $request->type);
-                })->where(function ($query) use ($request) {
-                    $query->where('fname', '=', $request->search)
-                        ->where('type', '=', 'Customer')
-                        ->orWhere('lname', '=', $request->search)
-                        ->orWhere('mobile', '=', $request->search)
-                        ->orWhere('email', '=', $request->search);
-                })->get();
-            } else if ($request->type == 'Tailor') {
-                $data = User::where(function ($query) use ($request) {
-                    $query->where('type', '=', $request->type);
-                })->where(function ($query) use ($request) {
-                    $query->where('fname', '=', $request->search)
-                        ->where('type', '=', 'Tailor')
-                        ->orWhere('lname', '=', $request->search)
-                        ->orWhere('email', '=', $request->search)
-                        ->orWhere('mobile', '=', $request->search);
-                })->get();
-            }
-
-            return response()->json([
-                'data' => $data,
-                'success' => true
-            ]);
+        $data = array();
+        if ($request->type == 'Customer') {
+            $data = User::where(function ($query) use ($request) {
+                $query->where('type', '=', $request->type);
+            })->where(function ($query) use ($request) {
+                $query->where('fname', '=', $request->search)
+                    ->orWhere('lname', '=', $request->search)
+                    ->orWhere('mobile', '=', $request->search)
+                    ->orWhere('email', '=', $request->search);
+            })->get();
+        } else if ($request->type == 'Tailor') {
+            $data = User::where(function ($query) use ($request) {
+                $query->where('type', '=', $request->type);
+            })->where(function ($query) use ($request) {
+                $query->where('fname', '=', $request->search)
+                    ->orWhere('lname', '=', $request->search)
+                    ->orWhere('email', '=', $request->search)
+                    ->orWhere('mobile', '=', $request->search);
+            })->get();
         }
+
+        return response()->json([
+            'data' => $data,
+            'success' => true
+        ]);
+        
     }
 
     public function delete_user(Request $request)
