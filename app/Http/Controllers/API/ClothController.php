@@ -15,7 +15,8 @@ class ClothController extends Controller
     {
         $tailors = Cloth::get();
         return response()->json([
-            'data' => $tailors
+            'data' => $tailors,
+            'success' => true
         ]);
     }
 

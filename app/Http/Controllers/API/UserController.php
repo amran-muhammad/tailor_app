@@ -95,21 +95,7 @@ class UserController extends Controller
             'success' => true,
         ]);
     }
-    public function get_all_dashboard_teacher(Request $request)
-    {
-        $user = Auth::user();
 
-        if ($user) {
-            $tailors = User::where('type', 'Tailor')->where('status', 'Approved')->get();
-            return response()->json([
-                'data' => $tailors
-            ]);
-        } else {
-            return response()->json([
-                'data' => false
-            ]);
-        }
-    }
 
     public function get_all_customer(Request $request)
     {
