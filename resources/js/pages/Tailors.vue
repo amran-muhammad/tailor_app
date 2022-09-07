@@ -225,6 +225,7 @@ export default {
                 email: '',
                 password: '',
                 mobile: '',
+                status: 'Pending',
                 type: 'Tailor'
             },
             edit_data: {
@@ -234,6 +235,7 @@ export default {
                 email: '',
                 password: '',
                 mobile: '',
+                status: 'Pending',
                 type: 'Tailor'
             },
         }
