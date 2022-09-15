@@ -13,6 +13,7 @@ class Cloth extends Model
         'cloth_name',
         'price',
         'image',
+        'image2',
         'description',
         'category_name',
         'status',

@@ -139,29 +139,20 @@ class UserController extends Controller
     }
     public function create_new_tailor(Request $request)
     {
-        $user = Auth::user();
-
-        if ($user && $user->type == 'Admin') {
-            $tailor = new User();
-            $tailor->fname = $request->fname;
-            $tailor->lname = $request->lname;
-            $tailor->email = $request->email;
-            $tailor->password = Hash::make($request->password);
-            $tailor->type = 'Tailor';
-            $tailor->mobile = $request->mobile;
-            $tailor->status = $request->status;
-            $tailor->address = $request->address;
-            $tailor->save();
-            return response()->json([
-                'data' => $tailor,
-                'success' => true
-            ]);
-        } else {
-            return response()->json([
-                'data' => false,
-                'success' => false
-            ]);
-        }
+        $tailor = new User();
+        $tailor->fname = $request->fname;
+        $tailor->lname = $request->lname;
+        $tailor->email = $request->email;
+        $tailor->password = Hash::make($request->password);
+        $tailor->type = 'Tailor';
+        $tailor->mobile = $request->mobile;
+        $tailor->status = $request->status;
+        $tailor->address = $request->address;
+        $tailor->save();
+        return response()->json([
+            'data' => $tailor,
+            'success' => true
+        ]);
     }
     public function update_user(Request $request)
     {

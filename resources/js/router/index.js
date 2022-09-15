@@ -6,7 +6,9 @@ import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import Tailors from '../pages/Tailors';
 import Customers from '../pages/Customers';
+import Orders from '../pages/Orders';
 import Cloths from '../pages/Cloths';
+import Notifications from '../pages/Notifications';
 
 export const routes = [
     {
@@ -38,6 +40,16 @@ export const routes = [
         name: 'customers',
         path: '/customers',
         component: Customers
+    },
+    {
+        name: 'orders',
+        path: '/orders',
+        component: Orders
+    },
+    {
+        name: 'notifications',
+        path: '/notifications',
+        component: Notifications
     },
 ];
 

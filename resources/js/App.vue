@@ -11,6 +11,8 @@
                 <router-link to="/tailors" class="nav-item nav-link">Tailors</router-link>
                 <router-link to="/customers" class="nav-item nav-link">Customers</router-link>
                 <router-link to="/cloths" class="nav-item nav-link">Cloths</router-link>
+                <router-link to="/orders" class="nav-item nav-link">Orders</router-link>
+                <router-link to="/notifications" class="nav-item nav-link">Notifications</router-link>
             </div>
         
             

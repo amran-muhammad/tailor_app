@@ -14,6 +14,12 @@ class ClothController extends Controller
     public function get_all_cloth(Request $request)
     {
         $tailors = Cloth::get();
+        for($i=0;$i<sizeof(($tailors));$i++){
+            $images=array();
+            $images[0]= $tailors[$i]['image'];
+            $images[1] = $tailors[$i]['image2'];
+            $tailors[$i]['images'] = $images;
+        }
         return response()->json([
             'data' => $tailors,
             'success' => true
@@ -43,6 +49,9 @@ class ClothController extends Controller
             }
             if (isset($request->image)) {
                 $object_cloth['image'] = $request->image;
+            }
+            if (isset($request->image2)) {
+                $object_cloth['image2'] = $request->image2;
             }
             $cloth = Cloth::create($object_cloth);
             return response()->json([
@@ -78,6 +87,9 @@ class ClothController extends Controller
             }
             if (isset($request->image)) {
                 $object_cloth['image'] = $request->image;
+            }
+            if (isset($request->image2)) {
+                $object_cloth['image2'] = $request->image2;
             }
             $cloth = Cloth::where('id',$request->id)->update($object_cloth);
             $cloth = Cloth::where('id',$request->id)->first();
@@ -149,7 +161,8 @@ class ClothController extends Controller
 
         return response()->json([
             'data' => $data,
-            'payload' => $request->all()
+            'payload' => $request->all(),
+            'success' => true
         ]);
     }
 }

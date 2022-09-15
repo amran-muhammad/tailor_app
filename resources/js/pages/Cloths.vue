@@ -30,6 +30,13 @@
                                         autofocus autocomplete="off" placeholder="Paste Image Link">
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="llname" class="col-sm-4 col-form-label text-md-right">Secondary Image Link</label>
+                                <div class="col-md-8">
+                                    <input id="llname" type="text" class="form-control" v-model="form_data.image2" required
+                                        autofocus autocomplete="off" placeholder="Paste Image Link">
+                                </div>
+                            </div>
 
                             <div class="form-group row mt-1">
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Price</label>
@@ -83,6 +90,13 @@
                                 <label for="llname" class="col-sm-4 col-form-label text-md-right">Image Link</label>
                                 <div class="col-md-8">
                                     <input id="llname" type="text" class="form-control" v-model="edit_data.image" required
+                                        autofocus autocomplete="off" placeholder="Paste Image Link">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="llname" class="col-sm-4 col-form-label text-md-right">Secondary Image Link</label>
+                                <div class="col-md-8">
+                                    <input id="llname" type="text" class="form-control" v-model="edit_data.image2" required
                                         autofocus autocomplete="off" placeholder="Paste Image Link">
                                 </div>
                             </div>
@@ -251,6 +265,7 @@ export default {
                 price: 0,
                 category_name: '',
                 image: '',
+                image2: '',
                 description: '',
             },
             edit_data: {
@@ -259,6 +274,7 @@ export default {
                 price: 0,
                 category_name: '',
                 image: '',
+                image2: '',
                 description: '',
             },
             editIndex: -1,
@@ -334,6 +350,7 @@ export default {
             this.edit_data.price = item.price
             this.edit_data.category_name = item.category_name
             this.edit_data.image = item.image
+            this.edit_data.image2 = item.image2
             this.edit_data.description = item.description
             this.edit_data.status = item.status
         },
