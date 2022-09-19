@@ -13,15 +13,26 @@ class ClothController extends Controller
 {
     public function get_all_cloth(Request $request)
     {
-        $tailors = Cloth::get();
-        for($i=0;$i<sizeof(($tailors));$i++){
+        $cloths = array();
+        if($request->cloth_id){
+            $cloths = Cloth::where('id',$request->cloth_id)->first();
             $images=array();
-            $images[0]['image_url']= $tailors[$i]['image'];
-            $images[1]['image_url'] = $tailors[$i]['image2'];
-            $tailors[$i]['images'] = $images;
+            $images[0]['image_url']= $cloths['image'];
+            $images[1]['image_url'] = $cloths['image2'];
+            $cloths['images'] = $images;
         }
+        else{
+            $cloths = Cloth::get();
+            for($i=0;$i<sizeof(($cloths));$i++){
+                $images=array();
+                $images[0]['image_url']= $cloths[$i]['image'];
+                $images[1]['image_url'] = $cloths[$i]['image2'];
+                $cloths[$i]['images'] = $images;
+            }
+        }
+        
         return response()->json([
-            'data' => $tailors,
+            'data' => $cloths,
             'success' => true
         ]);
     }
