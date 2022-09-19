@@ -16,8 +16,8 @@ class ClothController extends Controller
         $tailors = Cloth::get();
         for($i=0;$i<sizeof(($tailors));$i++){
             $images=array();
-            $images[0]= $tailors[$i]['image'];
-            $images[1] = $tailors[$i]['image2'];
+            $images[0]['image_url']= $tailors[$i]['image'];
+            $images[1]['image_url'] = $tailors[$i]['image2'];
             $tailors[$i]['images'] = $images;
         }
         return response()->json([

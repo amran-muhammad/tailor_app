@@ -93,17 +93,30 @@ class UserController extends Controller
     }
     public function get_all_tailor(Request $request)
     {
-        $tailors = User::where('type', 'Tailor')->get();
         $cloths = Cloth::all();
-        for($i=0;$i<sizeof(($tailors));$i++){
-            $tailors[$i]['cloths'] = $cloths;
+
+        for($i=0;$i<sizeof(($cloths));$i++){
+            $images=array();
+            $images[0]['image_url']= $cloths[$i]['image'];
+            $images[1]['image_url'] = $cloths[$i]['image2'];
+            $cloths[$i]['images'] = $images;
+        }
+
+        $tailors = array();
+        if($request->tailor_id){
+            $tailors = User::where('id', $request->tailor_id)->first();
+            $tailors['cloths'] = $cloths;
+        }else{
+            $tailors = User::where('type', 'Tailor')->get();
+            for($i=0;$i<sizeof(($tailors));$i++){
+                $tailors[$i]['cloths'] = $cloths;
+            }
         }
         return response()->json([
             'data' => $tailors,
             'success' => true,
         ]);
     }
-
 
     public function get_all_customer(Request $request)
     {
