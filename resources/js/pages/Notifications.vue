@@ -61,14 +61,13 @@
             </tbody>
             <tbody v-else>
                 <tr v-for="(item, index) in notifications" :key="index">
-                    <td>{{ item.tailor.fname}} {{ item.tailor.lname}}</td>
-                    <td>{{ item.customer.fname}} {{ item.customer.lname}}</td>
-                    <td>{{item.title}}</td>
-                    <td>{{item.message}}</td>
-                    <td>{{item.status}}</td>
-                    <td>{{ item.is_seen}}</td>
+                    <td> <span v-if="item.tailor"> {{ item.tailor.fname}} {{ item.tailor.lname}} </span></td>
+                    <td> <span v-if="item.customer"> {{ item.customer.fname}} {{ item.customer.lname}} </span></td>
+                    <td> <span v-if="item.title"></span> {{item.title}}</td>
+                    <td> <span v-if="item.message"></span> {{item.message}}</td>
+                    <td> <span v-if="item.status"></span> {{item.status}}</td>
+                    <td> <span v-if="item.is_seen"></span> {{item.is_seen}}</td>
                     <td>
-                        
                         <button style="margin-left:5px" class="btn btn-sm btn-danger"
                             @click="deleteClothOn(item, index)">Delete</button>
                     </td>
